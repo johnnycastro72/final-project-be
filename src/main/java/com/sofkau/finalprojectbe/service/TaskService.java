@@ -36,6 +36,7 @@ public class TaskService implements ITaskService {
 
     @Override
     public Category saveTask(Task task) {
+        System.out.println(task);
         Category categoryFilter = categoryRepository.findById(task.getCategory().getId()).orElse(null);
 
         if (categoryFilter == null) {

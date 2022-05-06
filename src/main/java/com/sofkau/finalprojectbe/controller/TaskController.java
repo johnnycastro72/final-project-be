@@ -1,14 +1,15 @@
 package com.sofkau.finalprojectbe.controller;
 
-import com.sofkau.finalprojectbe.entity.Category;
-import com.sofkau.finalprojectbe.entity.Task;
+import com.sofkau.finalprojectbe.converters.SingleModelMapper;
+import com.sofkau.finalprojectbe.dto.CategoryDto;
+import com.sofkau.finalprojectbe.dto.TaskDto;
 import com.sofkau.finalprojectbe.service.CategoryService;
 import com.sofkau.finalprojectbe.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1")
@@ -21,23 +22,31 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private SingleModelMapper singleMapper;
+
     @GetMapping("get/tasks")
-    public List<Task> getAllTaskByCategory(@RequestBody Category category){
-        return taskService.findAllTasksByCategory(category);
+    public List<TaskDto> getAllTaskByCategory(@RequestBody CategoryDto categoryDto){
+
+        return taskService.findAllTasksByCategory(
+                singleMapper.mapToCategory(categoryDto)).stream().map(
+                        task -> singleMapper.mapToTaskDto(task)
+        ).collect(Collectors.toUnmodifiableList());
     }
 
     @PostMapping("save/task")
-    public Category createTask(@RequestBody Task task) {
-        return taskService.saveTask(task);
+    public CategoryDto createTask(@RequestBody TaskDto taskDto)
+    {
+        return singleMapper.mapToCategoryDto(taskService.saveTask(singleMapper.mapToTask(taskDto)));
     }
 
     @PutMapping("update/task")
-    public Category updateTask(@RequestBody Task task) {
-        return taskService.updateTask(task);
+    public CategoryDto updateTask(@RequestBody TaskDto taskDto) {
+        return singleMapper.mapToCategoryDto(taskService.updateTask(singleMapper.mapToTask(taskDto)));
     }
 
     @DeleteMapping("delete/task")
-    public void deleteTask(@RequestBody Task task) {
-        taskService.deleteTask(task.getId());
+    public void deleteTask(@RequestBody TaskDto taskDto) {
+        taskService.deleteTask(singleMapper.mapToTask(taskDto).getId());
     }
 }
