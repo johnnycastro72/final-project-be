@@ -10,7 +10,7 @@ public class SingleModelMapper {
 
     private final ModelMapper singleMapper = new ModelMapper();
 
-    public Task mapToTask(TaskDto taskDto){
+    public Task mapToTask(TaskDto taskDto) {
         return singleMapper.map(taskDto, Task.class);
     }
 

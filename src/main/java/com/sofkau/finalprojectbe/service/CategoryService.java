@@ -27,7 +27,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public Category saveCategory(Category category) {
-        if (category.getTitle().isBlank()){
+        if (category.getTitle().isBlank()) {
             throw new CategoryNotFoundException("Category title can't be blank");
         }
         return categoryRepository.save(category);
@@ -37,7 +37,7 @@ public class CategoryService implements ICategoryService {
     public Category updateCategory(Category category) {
         Category categoryToBeDeleted = categoryRepository.findById(category.getId()).orElse(null);
 
-        if (categoryToBeDeleted == null){
+        if (categoryToBeDeleted == null) {
             throw new CategoryNotFoundException("Category not found when trying to update it. Category Id: " + category.getId());
         }
 
@@ -48,7 +48,7 @@ public class CategoryService implements ICategoryService {
     public void deleteCategory(Category category) {
         Category categoryToBeDeleted = categoryRepository.findById(category.getId()).get();
 
-        if (categoryToBeDeleted.getId() != category.getId()){
+        if (categoryToBeDeleted.getId() != category.getId()) {
             throw new CategoryNotFoundException("Category not found when trying to delete it. Category id: " + category.getId());
         }
         if (!categoryToBeDeleted.getTasks().isEmpty()) {

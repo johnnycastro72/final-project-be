@@ -26,17 +26,16 @@ public class TaskController {
     private SingleModelMapper singleMapper;
 
     @GetMapping("get/tasks")
-    public List<TaskDto> getAllTaskByCategory(@RequestBody CategoryDto categoryDto){
+    public List<TaskDto> getAllTaskByCategory(@RequestBody CategoryDto categoryDto) {
 
         return taskService.findAllTasksByCategory(
                 singleMapper.mapToCategory(categoryDto)).stream().map(
-                        task -> singleMapper.mapToTaskDto(task)
+                task -> singleMapper.mapToTaskDto(task)
         ).collect(Collectors.toUnmodifiableList());
     }
 
     @PostMapping("save/task")
-    public CategoryDto createTask(@RequestBody TaskDto taskDto)
-    {
+    public CategoryDto createTask(@RequestBody TaskDto taskDto) {
         return singleMapper.mapToCategoryDto(taskService.saveTask(singleMapper.mapToTask(taskDto)));
     }
 
