@@ -24,7 +24,8 @@ public class TaskService implements ITaskService {
         Category categoryFilter = categoryRepository.findById(category.getId()).orElse(null);
 
         if (categoryFilter == null) {
-            throw new CategoryNotFoundException("Category not found in the list of tasks filtered by category " + category.getId())
+            throw new CategoryNotFoundException("Category not found in the list of tasks filtered by category " +
+                    category.getId());
         }
 
         List<Task> tasks = taskRepository.findAllByCategory(category);
@@ -37,7 +38,7 @@ public class TaskService implements ITaskService {
         Category categoryFilter = categoryRepository.findById(task.getCategory().getId()).orElse(null);
 
         if (categoryFilter == null) {
-            throw new CategoryNotFoundException("Category not found while adding the task " + task.getId())
+            throw new CategoryNotFoundException("Category not found while adding the task " + task.getId());
         }
         return taskRepository.save(task);
     }
@@ -52,7 +53,7 @@ public class TaskService implements ITaskService {
         Task task = taskRepository.findById(id).orElse(null);
 
         if (task == null) {
-            throw new TaskNotFoundException("Task not found while deleting it " + task.getId())
+            throw new TaskNotFoundException("Task not found while deleting it " + task.getId());
         }
     }
 }
