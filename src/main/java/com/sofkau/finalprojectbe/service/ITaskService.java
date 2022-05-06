@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ITaskService {
 
-    List<Task> getAllTasksByCategory(Category category);
+    List<Task> findAllTasksByCategory(Category category);
 
     Task saveTask(Task task);
 

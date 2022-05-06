@@ -16,10 +16,11 @@ public class TaskService implements ITaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Task> getAllTasksByCategory(Category category) {
+    public List<Task> findAllTasksByCategory(Category category) {
 
         Category categoryFilter = categoryRepository.findById(category.getId()).orElse(null);
 
@@ -45,6 +46,16 @@ public class TaskService implements ITaskService {
 
     @Override
     public Task updateTask(Task task) {
+        Task taskToBeUpdated = taskRepository.findById(task.getId()).orElse(null);
+        Category categoryFilter = categoryRepository.findById(task.getCategory().getId()).orElse(null);
+
+        if (categoryFilter == null) {
+            throw new CategoryNotFoundException("Category not found when trying to update task. Task id: " + task.getId());
+        }
+        if (taskToBeUpdated == null) {
+            throw new TaskNotFoundException("Task not found when trying to delete it. Task id: " + task.getId());
+        }
+
         return taskRepository.save(task);
     }
 
@@ -53,7 +64,9 @@ public class TaskService implements ITaskService {
         Task task = taskRepository.findById(id).orElse(null);
 
         if (task == null) {
-            throw new TaskNotFoundException("Task not found while deleting it " + task.getId());
+            throw new TaskNotFoundException("Task not found when trying to delete it. Task id: " + id);
         }
+
+        taskRepository.deleteById(id);
     }
 }
