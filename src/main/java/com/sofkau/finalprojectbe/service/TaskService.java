@@ -35,28 +35,39 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public Task saveTask(Task task) {
+    public Category saveTask(Task task) {
         Category categoryFilter = categoryRepository.findById(task.getCategory().getId()).orElse(null);
 
         if (categoryFilter == null) {
             throw new CategoryNotFoundException("Category not found while adding the task " + task.getId());
         }
-        return taskRepository.save(task);
+
+        Category category = categoryRepository.findById(task.getCategory().getId()).get();
+        category.addTask(task);
+        categoryRepository.save(category);
+
+        return category;
     }
 
     @Override
-    public Task updateTask(Task task) {
-        Task taskToBeUpdated = taskRepository.findById(task.getId()).orElse(null);
-        Category categoryFilter = categoryRepository.findById(task.getCategory().getId()).orElse(null);
+    public Category updateTask(Task task) {
+        Task taskFilter = taskRepository.findById(task.getId()).orElse(null);
+        Task taskToBeUpdated = taskRepository.findById(task.getId()).get();
+        Category category = taskToBeUpdated.getCategory();
+        Category categoryFilter = categoryRepository.findById(category.getId()).orElse(null);
 
         if (categoryFilter == null) {
             throw new CategoryNotFoundException("Category not found when trying to update task. Task id: " + task.getId());
         }
-        if (taskToBeUpdated == null) {
+        if (taskFilter == null) {
             throw new TaskNotFoundException("Task not found when trying to delete it. Task id: " + task.getId());
         }
 
-        return taskRepository.save(task);
+        taskToBeUpdated.setMessage(task.getMessage());
+        taskToBeUpdated.setDone(task.getDone());
+        taskRepository.save(taskToBeUpdated);
+
+        return categoryRepository.save(category);
     }
 
     @Override

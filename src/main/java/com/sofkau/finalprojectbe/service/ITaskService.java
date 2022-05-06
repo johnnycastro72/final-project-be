@@ -9,9 +9,9 @@ public interface ITaskService {
 
     List<Task> findAllTasksByCategory(Category category);
 
-    Task saveTask(Task task);
+    Category saveTask(Task task);
 
-    Task updateTask(Task task);
+    Category updateTask(Task task);
 
     void deleteTask(Long id);
 }
