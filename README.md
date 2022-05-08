@@ -1,4 +1,5 @@
-src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/To_Do.svg/512px-To_Do.svg.png"></a>
+<p align="center">
+  <a title="17jiangz1, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:To_Do.svg"><img width="512" alt="To Do" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/To_Do.svg/512px-To_Do.svg.png"></a>
 </p>
 
 <h3 align="center">To-Do list Application</h3>
